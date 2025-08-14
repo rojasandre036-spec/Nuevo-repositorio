@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Te Amo Brian</title>
+  <meta name="theme-color" content="#000000"/>
+  <style>
+    :root { --rojo: #ff3b3b; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      background: #000;
+      color: var(--rojo);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      gap: 16px;
+    }
+    h1 {
+      font-size: clamp(32px, 10vw, 64px);
+      margin: 0;
+      animation: latir 1s infinite;
+    }
+    @keyframes latir {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .corazon {
+      position: absolute;
+      pointer-events: none;
+      font-size: 24px;
+      animation: caer linear forwards;
+    }
+    @keyframes caer {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
+    }
+    .btn {
+      background: transparent;
+      border: 2px solid var(--rojo);
+      color: var(--rojo);
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    .btn.solid { background: var(--rojo); color: #000; }
+    .hide { display: none; }
+  </style>
+</head>
+<body>
+  <h1>💖 TE AMO BRIAN 💖</h1>
+
+  <button id="playBtn" class="btn solid hide">▶️ Reproducir música</button>
+  <button id="muteBtn" class="btn">🔊 Silenciar</button>
+
+  <audio id="musica" autoplay loop playsinline>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script>
+    function crearCorazon() {
+      const c = document.createElement('div');
+      c.className = 'corazon';
+      c.textContent = Math.random() > 0.5 ? '❤️' : '💖';
+      c.style.left = Math.random() * 100 + 'vw';
+      c.style.fontSize = (Math.random() * 24 + 16) + 'px';
+      c.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), parseFloat(c.style.animationDuration) * 1000);
+    }
+    setInterval(crearCorazon, 250);
+
+    const audio = document.getElementById('musica');
+    const playBtn = document.getElementById('playBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    audio.play().then(() => playBtn.classList.add('hide')).catch(() => {
+      playBtn.classList.remove('hide');
+    });
+
+    playBtn.addEventListener('click', () => {
+      audio.play();
+      playBtn.classList.add('hide');
+    });
+
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? '🔇 Activar sonido' : '🔊 Silenciar';
+    });
+  </script>
+</body>
+</html>
